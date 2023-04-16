@@ -1,0 +1,126 @@
+DMS Videostore
+Dora Baciu
+Maria Petrova
+Sakeena Younus
+
+--------------------------------------------------------------------------------------------------------
+
+0.
+Goals, Description, & Issues Faced
+-------------------------------------
+
+	The goal of Phase 3 of this project was to create an interface that can be used to access and update the information in our videostore database, which we designed and created in the previous phases of the project. 
+	
+	The database schema is as follows: The DMS Videostore franchise has several store locations. Members of the videostore network can visit these locations and rent either disks, or video players. The disks contain movies in either blu-ray or DVD format, and each has an associated cost of rental per day. Some of the video players have special features. The implementation of this videostore keeps track of the rentals and allows members to:
+	- Search a movie by genre, title, or director name
+	- Checkout a movie
+	- Return a movie
+	- Reserve a movie
+	- Calculate amount due for a given checked-out movie based on current date
+	- Print the list of movies that they've reserved
+	- Print the movie_IDs and titles of movies directed by a certain director
+	- Log out of the application
+Special members called administrators also exist. Admins can:
+	- Add a movie copy to the database
+	- Search a movie by its attributes and check the status of its copies
+	- Add a new customer to the database
+	- Print the name and location of a given store branch
+	- Print the top 10 most frequent renters in a store and the number of movies each one has rented
+	- Print the top 10 most rented movies in a store
+	- Print the 10 most popular movies checked out in a given year
+	- Find the average amount paid for rental per customer
+	- Log out of the application
+Before being able to reach these functions, members (regular and admin) must log into the application using their member username and password. The home login page will also have an option to create a new regular member account, which will be added to the database. A new administrator account can only be created by an already-existing admin. 
+	
+	Revisions made since Phase 2 include eliminating the producer attribue of movie and renaming member 'user_ID' to 'username' and specifying its uniqueness. Since the producer of a movie is often the same as the director of the movie, we felt that it was an unessecary element. As for the username attribute, 'user_ID' was confusing when considering the attribute 'member_ID'. By renaming it, we eliminated the confusion between the 'member_ID' which is used to keep track of the member within the database, and the 'username' which the member uses to log into their account.
+	
+	Problems enocuntered in Phase 3:
+TODO
+--------------------------------------------------------------------------------------------------------
+
+1.
+Description of Implementation
+-------------------------------------
+
+	Our implementatation of this project involved creating the videostore database itself, populating the tables with data, and writing a front-end application using PHP, HTML, and CSS. We also took time to create a pleasant user interface for the menu-driven application, as we all share an interest in design. 
+	See the previous section for a description of the problems faced in Phase 3.
+
+--------------------------------------------------------------------------------------------------------
+
+2.
+SQL Commands - Table Creation
+-------------------------------------
+
+CREATE TABLE store (
+	store_id INT PRIMARY KEY AUTO_INCREMENT,
+	store_phone VARCHAR(10),
+	store_street1 VARCHAR(50),
+	store_street2 VARCHAR(50),
+	store_city VARCHAR(50),
+	store_state VARCHAR(50),
+	store_zipcode VARCHAR(5),
+	UNIQUE (Store_ID)
+);
+
+CREATE TABLE item (
+	item_id INT PRIMARY KEY AUTO_INCREMENT,
+	store_id INT,
+	FOREIGN KEY (store_id)
+	REFERENCES store (store_id),
+	UNIQUE (item_id)
+);
+
+CREATE TABLE player (
+	item_id INT PRIMARY KEY AUTO_INCREMENT,
+	Features VARCHAR(50),
+	UNIQUE (item_id)
+);
+
+CREATE TABLE member (
+	member_id INT PRIMARY KEY AUTO_INCREMENT,
+	member_first_name VARCHAR(50),
+	member_last_name VARCHAR(50),
+	member_email VARCHAR(50),
+	member_username VARCHAR(50),
+	member_password VARCHAR(50),
+	UNIQUE (member_id, member_email, member_username)
+);
+
+CREATE TABLE transaction (
+	tran_id INT PRIMARY KEY AUTO_INCREMENT,
+	tran_start_date VARCHAR(50),
+	tran_end_date VARCHAR(50),
+	tran_type VARCHAR(50),
+	store_id INT,
+	item_id INT,
+	member_id INT,
+	FOREIGN KEY (store_id)
+	REFERENCES store (store_id),
+	FOREIGN KEY (item_id)
+	REFERENCES item (item_id),
+	FOREIGN KEY (member_id)
+	REFERENCES member (member_id),
+	UNIQUE (member_id)
+);
+
+CREATE TABLE movie (
+	movie_id INT PRIMARY KEY AUTO_INCREMENT,
+	item_id INT,
+	movie_genre VARCHAR(50),
+	movie_title VARCHAR(50),
+	movie_producer VARCHAR(50),
+	movie_director VARCHAR(50),
+	movie_actor1 VARCHAR(50),
+	movie_actor2 VARCHAR(50),
+	movie_num_disks VARCHAR(50),
+	FOREIGN KEY (item_id)
+	REFERENCES item (item_id),
+	UNIQUE (movie_id)
+);
+
+CREATE TABLE disk (
+	item_id INT PRIMARY KEY AUTO_INCREMENT,
+	disk_daily_rent VARCHAR(50),
+	disk_type VARCHAR(50),
+	UNIQUE (item_id)
+);
