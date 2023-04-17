@@ -32,7 +32,7 @@ Special members called administrators also exist. Admins can:
 	- Log out of the application
 Before being able to reach these functions, members (regular and admin) must log into the application using their member username and password. The home login page will also have an option to create a new regular member account, which will be added to the database. A new administrator account can only be created by an already-existing admin. 
 	
-	Revisions made since Phase 2 include eliminating the producer attribue of movie and renaming member 'user_ID' to 'username' and specifying its uniqueness. Since the producer of a movie is often the same as the director of the movie, we felt that it was an unessecary element. As for the username attribute, 'user_ID' was confusing when considering the attribute 'member_ID'. By renaming it, we eliminated the confusion between the 'member_ID' which is used to keep track of the member within the database, and the 'username' which the member uses to log into their account.
+	Revisions made since Phase 2 include eliminating the producer attribue of movie and renaming member 'user_ID' to 'username' and specifying its uniqueness. Since the producer of a movie is often the same as the director of the movie, we felt that it was an unessecary element. As for the username attribute, 'user_ID' was confusing when considering the attribute 'member_ID'. By renaming it, we eliminated the confusion between the 'member_ID' which is used to keep track of the member within the database, and the 'username' which the member uses to log into their account. We also added an 'is_admin' attribute to the 'member' table to reflect the additional admin/customer distinction that was introduced in Phase 3.
 	
 	Problems enocuntered in Phase 3:
 TODO
@@ -85,6 +85,8 @@ CREATE TABLE member (
 	member_password VARCHAR(50),
 	UNIQUE (member_id, member_email, member_username)
 );
+
+ALTER TABLE `member` CHANGE `is_admin` `is_admin` TINYINT(1) NULL DEFAULT '0';
 
 CREATE TABLE transaction (
 	tran_id INT PRIMARY KEY AUTO_INCREMENT,
