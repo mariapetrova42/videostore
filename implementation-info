@@ -34,8 +34,8 @@ Before being able to reach these functions, members (regular and admin) must log
 	
 	Revisions made since Phase 2 include eliminating the producer attribue of movie and renaming member 'user_ID' to 'username' and specifying its uniqueness. Since the producer of a movie is often the same as the director of the movie, we felt that it was an unessecary element. As for the username attribute, 'user_ID' was confusing when considering the attribute 'member_ID'. By renaming it, we eliminated the confusion between the 'member_ID' which is used to keep track of the member within the database, and the 'username' which the member uses to log into their account. We also added an 'is_admin' attribute to the 'member' table to reflect the additional admin/customer distinction that was introduced in Phase 3.
 	
-	Problems enocuntered in Phase 3:
-TODO
+	One of the first problems we encountered in Phase 3 was connecting to the server. $_POST was not working properly, though we managed to debug and fix the issue with some advice from Professor Banerji.
+
 --------------------------------------------------------------------------------------------------------
 
 1.
