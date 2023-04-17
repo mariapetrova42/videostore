@@ -17,13 +17,14 @@
         alt="Image of Video Store with DVDs for sale">
 
     <div id="wrapper">
-      <form action="welcome.php" method="get">
+      <form action="welcome.php" method="post">
         <!-- action is always a php page bc it always processes data from form -->
         <!-- Welcome.php has to:
         * Take user id and password from form and check if the user exists in the database 
         * Display a menu - different for member and admin (can be done with an admin checkbox)
         * Prevent someone from going into the member.php page directly-->
 
+        <br>
         Username <br>
         <input type="text" name="member_username" id="member_username"><br><br>
         Password <br>

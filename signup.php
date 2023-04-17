@@ -7,6 +7,10 @@
   <head>
   <title>Video Store Signup Page</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        
+
+    </style>
 
   </head>
   <body>
@@ -47,7 +51,7 @@
     <div id="wrapper">
  
         <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="myform">
-
+            <br>
             First Name:  <input type="text" name="member_first_name"/>
             <br><br>
             Last Name:  <input type="text" name="member_last_name"/>
@@ -59,18 +63,18 @@
             Confirm Password: <input type="password" name="password2" id="password2"/>
             <br><br>
 
-            <input type="button" value="Submit" onclick="checkpasswords()">
+            <!-- <input type="button" value="Submit" onclick="checkpasswords()"> -->
+            <input type="submit" value="Submit" onclick="checkpasswords()">
+
 
             &nbsp;&nbsp;&nbsp;&nbsp;
             <input type="reset" value="Clear"/>
             <br><br>
-            Already have an account? Sign in <a href="index.html">here</a>.
+            Already have an account? Sign in <a href="index.php">here</a>.
         </form>
     </div>
 
 <?php
-    echo"I am on line 57<br>";
-
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -87,21 +91,42 @@
     else
     {
         //echo "Connected successfully<br>";
-        echo"I am on line 75";
+
+        // if(isset($_POST["member_first_name"]) && isset($_POST["member_last_name"]) && isset($_POST["member_username"])  && isset($_POST["member_password"])) {
+        //     echo "I am on line 96";
+
+        //     $firstname = $_POST["member_first_name"];
+        //     $lastname = $_POST["member_last_name"];
+        //     $username = $_POST["member_username"];
+        //     $password = $_POST["member_password"];
+        // }
+        // else{
+        //     echo "Make sure all fields are filled in";
+        // }
 
 
+ 
         $firstname = isset($_POST["member_first_name"]) ? $_POST["member_first_name"] : "";
+        echo "firstname: " . $firstname . "<br>"; 
+
         $lastname = isset($_POST["member_last_name"]) ? $_POST["member_last_name"] : "";
+        echo "lastname: " . $lastname . "<br>"; 
+
         $username = isset($_POST["member_username"]) ? $_POST["member_username"] : "";
+        echo "username: " . $username . "<br>"; 
+
         $password = isset($_POST["member_password"]) ? $_POST["member_password"] : "";
-        
+        echo "password: " . $password . "<br>"; 
+
 	}
-	if($userid!=""){
+	if($username!= ""){
         echo"I am on line 85";
 
         //Create the SQL query
         $sql = "select member_username from member";
         $sql = $sql . " where member_username = '$username'";
+
+        echo $sql;
         
 	//Run the query
 	$result = $conn->query($sql);
