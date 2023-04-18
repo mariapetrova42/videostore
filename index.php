@@ -7,6 +7,20 @@
   <head>
   <title>Video Store Login</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        input[type=checkbox] {
+          position: absolute;
+          left: 150px;
+          top: -7px;
+          height:25px;
+          width:25px;
+        }
+
+        #div_checkbox {
+          position: relative;
+          /* display: block; */
+        }
+    </style>
 
   </head>
   <body>
@@ -29,6 +43,13 @@
         <input type="text" name="member_username" id="member_username"><br><br>
         Password <br>
         <input type="password" name="member_password" id="member_password"><br><br>
+        <div id="div_checkbox">
+          I am an Admin: 
+          <input type="checkbox" name="is_admin" value="1">
+        </div>
+
+        <br>
+
         <input type="submit" id="submit" name="submit" value="Submit">
       </form>
 

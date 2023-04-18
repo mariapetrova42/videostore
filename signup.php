@@ -41,7 +41,8 @@
                 else
                 {
                     document.getElementById("myform").submit();
-                    // window.location.href = "thankyou.html";
+                    window.location.href == "thankyou.html";
+
                 }
         }
     </script>
@@ -50,11 +51,13 @@
 
     <div id="wrapper">
  
-        <form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="myform">
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="myform">
             <br>
             First Name:  <input type="text" name="member_first_name"/>
             <br><br>
             Last Name:  <input type="text" name="member_last_name"/>
+            <br><br>
+            Email:  <input type="email" name="member_email"/>
             <br><br>
             Username:  <input type="text" name="member_username"/>
             <br><br>
@@ -103,40 +106,36 @@
         // else{
         //     echo "Make sure all fields are filled in";
         // }
-
-
  
         $firstname = isset($_POST["member_first_name"]) ? $_POST["member_first_name"] : "";
-        echo "firstname: " . $firstname . "<br>"; 
+        // echo "firstname: " . $firstname . "<br>"; 
 
         $lastname = isset($_POST["member_last_name"]) ? $_POST["member_last_name"] : "";
-        echo "lastname: " . $lastname . "<br>"; 
+        // echo "lastname: " . $lastname . "<br>"; 
+
+        $email = isset($_POST["member_email"]) ? $_POST["member_email"] : "";
 
         $username = isset($_POST["member_username"]) ? $_POST["member_username"] : "";
-        echo "username: " . $username . "<br>"; 
+        // echo "username: " . $username . "<br>"; 
 
         $password = isset($_POST["member_password"]) ? $_POST["member_password"] : "";
-        echo "password: " . $password . "<br>"; 
+        // echo "password: " . $password . "<br>"; 
 
 	}
 	if($username!= ""){
-        echo"I am on line 85";
 
         //Create the SQL query
         $sql = "select member_username from member";
         $sql = $sql . " where member_username = '$username'";
-
-        echo $sql;
         
 	//Run the query
 	$result = $conn->query($sql);
     
     if ($result->num_rows == 0) 
 	{
-        echo"I am on line 96";
 
-        $sql2 = "insert into member(member_first_name, member_last_name, member_username , member_password) values(";
-        $sql2 = $sql2 . "'$firstname','$lastname','$username','$password')";
+        $sql2 = "insert into member(member_first_name, member_last_name, member_email, member_username , member_password) values(";
+        $sql2 = $sql2 . "'$firstname','$lastname', '$email', '$username','$password')";
 	    $result = $conn->query($sql2);
         
         /*if ($result->num_rows > 0) 
@@ -146,11 +145,12 @@
             
         echo "<br><a href='index.php'>Login</a>";
 
+
     } 
     else
 	{
 
-        echo "Sorry! That userid already exists!";
+        echo "Sorry! That username already exists!";
         echo "<br><a href='signup.php'>Try again</a>";
     }
     }

@@ -30,12 +30,13 @@
     }
     else
     {
-        if(!isset($_POST["member_username"]) || !isset($_POST["member_password"])) {
+        if(!isset($_POST["member_username"]) || !isset($_POST["member_password"]) || !isset($_POST["is_admin"])) {
             echo "<h2>Please make sure all fields are filled in </h2>";
         }
 
         $username = $_POST["member_username"];
         $password = $_POST["member_password"];
+        $is_admin = $_POST["is_admin"];
 
         // echo "username: " . $username . "<br>"; 
         // echo "password: " . $password . "<br>"; 
