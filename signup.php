@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="styles.css">
     <style>
         
-
     </style>
 
   </head>
@@ -41,7 +40,7 @@
                 else
                 {
                     document.getElementById("myform").submit();
-                    window.location.href == "thankyou.html";
+                    // window.location.href == "index.php";
 
                 }
         }
@@ -66,8 +65,8 @@
             Confirm Password: <input type="password" name="password2" id="password2"/>
             <br><br>
 
-            <!-- <input type="button" value="Submit" onclick="checkpasswords()"> -->
-            <input type="submit" value="Submit" onclick="checkpasswords()">
+            <input type="button" value="Submit" onclick="checkpasswords()">
+            <!-- <input type="submit" value="Submit" onclick="checkpasswords()"> -->
 
 
             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -144,6 +143,9 @@
             echo "Something went wrong!";*/
             
         echo "<br><a href='index.php'>Login</a>";
+        
+        header("location: index.php");
+
 
 
     } 

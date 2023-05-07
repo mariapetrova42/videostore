@@ -11,7 +11,7 @@
         input[type=checkbox] {
           position: absolute;
           left: 150px;
-          top: -7px;
+          top: -8px;
           height:25px;
           width:25px;
         }
@@ -22,6 +22,24 @@
         }
     </style>
 
+    <script>
+      function checkadmin(){
+        // p1 = document.getElementById("is_admin").value
+        // if(p1!=p2)
+        //     {
+        //     alert("The password fields dont match!");
+        //     document.getElementById("member_password").value = "";
+        //     document.getElementById("password2").value = "";
+        //     }
+        //     else
+        //     {
+        //         document.getElementById("form").submit();
+        //         window.location.href == "index.php";
+
+        //     }
+        }
+    </script>
+
   </head>
   <body>
       <img
@@ -31,7 +49,7 @@
         alt="Image of Video Store with DVDs for sale">
 
     <div id="wrapper">
-      <form action="welcome.php" method="post">
+      <form action="welcome.php" method="post" id="form">
         <!-- action is always a php page bc it always processes data from form -->
         <!-- Welcome.php has to:
         * Take user id and password from form and check if the user exists in the database 
@@ -43,14 +61,17 @@
         <input type="text" name="member_username" id="member_username"><br><br>
         Password <br>
         <input type="password" name="member_password" id="member_password"><br><br>
-        <div id="div_checkbox">
+        <!-- <div id="div_checkbox">
+          
           I am an Admin: 
-          <input type="checkbox" name="is_admin" value="1">
-        </div>
+          <input type="checkbox" name="is_admin" id="is_admin" value="1">
+        </div> -->
 
         <br>
 
-        <input type="submit" id="submit" name="submit" value="Submit">
+        <!-- <input type="submit" id="submit" name="submit" value="Submit"> -->
+        <input type="submit" value="Submit"> 
+
       </form>
 
       <br><br>
