@@ -41,8 +41,18 @@
         // echo "username: " . $username . "<br>"; 
         // echo "password: " . $password . "<br>"; 
         
-        $sql = "SELECT member_first_name, member_last_name, member_username, member_password from member ";
-        $sql = $sql . "where member_username = '" . $username . "' and member_password = '" . $password . "';";
+        // $sql = "SELECT member_id, member_first_name, member_last_name, member_username, member_password from member ";
+        // $sql = $sql . "where member_username = '" . $username . "' and member_password = '" . $password . "';";
+
+        $sql = "SELECT member_id, member_first_name, member_last_name, member_username, member_password from member where member_username = '". $username ."' and member_password = '" . $password ."';";
+
+
+        // echo $sql;
+
+        // $member_id = "SELECT member_id from member where member_username = '". $username ."' and member_password = '" . $password ."';";
+
+        // echo "MEMBER ID";
+        // echo $member_id;
 
         // echo $sql;
         // echo"<br><br>";
@@ -63,8 +73,10 @@
                 // echo "<li> <a href=\"search.php\"> Search for a document </li>";
                 // echo "</ul>";
                 echo "<ul>";
-                    echo "<a href=\"account.php\"> Your Account </a>";
-                    echo"<br><br>";
+                    // echo "<a href=\"borrowed_items.php\"> Items Borrowed </a>";
+                    // echo "<a href=\"borrowed_items.php\"> Items Borrowed </a>";
+                    // echo"<br><br>";
+                    echo "<li> <a href=\"borrowed_items.php\"> View your borrowed items </a></li>";
                     echo "<li> <a href=\"search.php\"> Search for a movie </a></li>";
                     echo "<li> <a href=\"borrow.php\"> Rent a player </a></li>";
                     echo "<li> <a href=\"return.php\"> Return a movie </a></li>";
@@ -76,9 +88,15 @@
         //Set session variables
             session_start();
             $_SESSION["member_username"] = $username;
-            $_SESSION["member_first_name"] = $username;
+            // $_SESSION["member_first_name"] = $username;
 
             $_SESSION["fullname"] = $row["member_first_name"] . " " . $row["member_last_name"];
+
+            
+            $_SESSION["member_id"] = $row["member_id"];
+
+            // echo "member_id";
+            // var_dump($_SESSION["member_id"]);
 
         
             //admin
@@ -105,11 +123,18 @@
                 echo "</ul>";
             }
         }
+        echo "<a href='logout.php'>Sign Out</a>";
+
         }
         else
         {
             echo "Sorry! You don't have a login. ";
-            echo "Create an account account <a href='signup.php'>here!</a>";
+            echo "Create an account <a href='signup.php'>here!</a>";
+
+            echo "<br><br>";
+
+            echo "Try logging in again <a href='index.php'>here.</a>";
+
         }
 
 
@@ -120,7 +145,6 @@
 ?>
 
     <br><br>
-    <a href="logout.php">Sign Out</a>
 <? require 'site_footer.php'; 
 ?>
 </div>
