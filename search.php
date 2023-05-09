@@ -6,9 +6,17 @@
 
     <style>
     
-        table, th, td, tr {
+        /* table, th, td, tr {
             border: solid grey;
 			border-collapse:collapse;
+        } */
+
+		table, th, td, tr {            
+			border: solid grey;
+			border-collapse:collapse;
+			padding: 7px 5px;
+			background-color: #77adb9;
+			color: #1c0909;
         }
     </style>
 	
@@ -96,30 +104,19 @@
 		$director = isset($_GET["movie_director"])?$_GET["movie_director"]:"";
 		$actor = isset($_GET["movie_actor"])?$_GET["movie_actor"]:"";
 
-		// $array = array($title)
-
 		if (!empty($_GET['movie_title'])) 
-			$sql = "select * from movie where movie_title like '%$title%'";
+			// $sql = "select * from movie where movie_title like '%$title%'";
+			$sql = "SELECT * FROM movie WHERE LOWER(movie_title) LIKE LOWER('%$title%')";
 		if (!empty($_GET['movie_genre'])) 
-			$sql = "select * from movie where movie_genre like '%$genre%'";
+			// $sql = "select * from movie where movie_genre like '%$genre%'";
+			$sql = "SELECT * FROM movie WHERE LOWER(movie_genre) LIKE LOWER('%$genre%')";
 		if (!empty($_GET['movie_director'])) 
-			$sql = "select * from movie where movie_director like '%$director%'";	
+			// $sql = "select * from movie where movie_director like '%$director%'";	
+			$sql = "SELECT * FROM movie WHERE LOWER(movie_director) LIKE LOWER('%$director%')";
 		if (!empty($_GET['movie_actor'])) 
-			// $sql = "select * from movie where movie_actor1 like '%$actor%' OR movie_actor2 like '%$actor%'";
-			$sql = "SELECT * FROM movie WHERE movie_actor1 LIKE '%" . $actor . "%' OR movie_actor2 LIKE '%" . $actor . "%'";		
-		// echo $sql;
+			// $sql = "SELECT * FROM movie WHERE movie_actor1 LIKE '%" . $actor . "%' OR movie_actor2 LIKE '%" . $actor . "%'";		
+			$sql = "SELECT * FROM movie WHERE LOWER(movie_actor1) LIKE LOWER('%$actor%') OR LOWER(movie_actor2) LIKE LOWER('%$actor%')";
 
-		// if($name == "")
-		// if(isset($_GET["movie_title"]))
-		// 	$sql = "select * from movie where movie_title like '%$title%'";
-		// 	// echo $sql;
-		// else if($title = "" and $genre=="")
-		// 	$sql = "select * from movie where movie_genre like '%$genre%'";
-		// 	echo $sql;
-		// else if($title == "" and $director="")
-		// $sql = "select * from movie where movie_title like '%$title%' AND movie_director like '%$director%'";
-		// else
-		// $sql = "select * from movie where movie_title like '%$title%' AND movie_actor1 like '%$actor1%' OR movie_actor2 like '%$actor2%";
 		
 		$result = $conn->query($sql);
 
