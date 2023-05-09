@@ -7,7 +7,7 @@
   <head>
   <title>Video Store Welcome Page</title>
     <link rel="stylesheet" href="styles.css">
-
+    
   </head>
   <body>
       <img
@@ -30,7 +30,7 @@
     }
     else
     {
-        if(!isset($_POST["member_username"]) || !isset($_POST["member_password"]) || !isset($_POST["is_admin"])) {
+        if(!isset($_POST["member_username"]) || !isset($_POST["member_password"])) {
             echo "<h2>Please make sure all fields are filled in </h2>";
         }
 
@@ -55,7 +55,7 @@
             // echo"i am on line 45";
 
             $row = $result->fetch_assoc();
-            echo"<div #wrapper>";
+            echo"<div id='wrapper'>";
                 echo "<h1>Video Store Home Screen</h1>";
                 echo "<h2>Welcome, " . $row["member_first_name"] . " " . $row["member_last_name"] . ".</h2>";
                 echo "<h3>Please Choose an Option Below</h3>";
@@ -63,12 +63,14 @@
                 // echo "<li> <a href=\"search.php\"> Search for a document </li>";
                 // echo "</ul>";
                 echo "<ul>";
-                echo "<li> <a href=\"search.php\"> Search for a movie </li>";
-                echo "<li> <a href=\"search.php\"> Rent a player </li>";
-                echo "<li> <a href=\"search.php\"> View items checked out </li>";
-                echo "<li> <a href=\"search.php\"> View items reserved </li>";
+                    echo "<a href=\"account.php\"> Your Account </a>";
+                    echo"<br><br>";
+                    echo "<li> <a href=\"search.php\"> Search for a movie </a></li>";
+                    echo "<li> <a href=\"borrow.php\"> Rent a player </a></li>";
+                    echo "<li> <a href=\"return.php\"> Return a movie </a></li>";
+
+                // echo "<li> <a href=\"search.php\"> View items reserved </li>";
                 echo "</ul>";
-            echo"</div>";
 
 
         //Set session variables
@@ -77,20 +79,52 @@
             $_SESSION["member_first_name"] = $username;
 
             $_SESSION["fullname"] = $row["member_first_name"] . " " . $row["member_last_name"];
+
+        
+            //admin
+            $sql_admin = "SELECT is_admin FROM member WHERE member_username = '" . $username . "' AND member_password = '" .$password . "' AND is_admin = 1;";
+
+
+            $result_admin = $conn->query($sql_admin);
+
+            if($result_admin->num_rows > 0){
+                $admin_row = $result_admin->fetch_assoc();
+                            
+            // echo "<br> sql admin: " . $sql_admin . " <br>";
+            // echo "<br> row['is_admin']: " . $admin_row["is_admin"] . " <br>";
+
+            if ($admin_row["is_admin"] == 1){
+
+                echo "<h1>Admin Functionalities</h1>";
+                echo "<h3>Please Choose an Option Below</h3>";
+                echo "<ul>";
+                echo "<li> <a href=\"add_movie.php\"> Add a movie </li>";
+                echo "<li> <a href=\"search_movie.php\"> Search for a movie </li>";
+                echo "<li> <a href=\"add_customer\"> Add a customer </li>";
+                echo "<li> <a href=\"info.php\"> Additional</li>";
+                echo "</ul>";
+            }
+        }
         }
         else
         {
-            echo "Sorry! You don't have a login.";
+            echo "Sorry! You don't have a login. ";
             echo "Create an account account <a href='signup.php'>here!</a>";
         }
+
+
         $conn->close();
+
         
     }
 ?>
 
     <br><br>
     <a href="logout.php">Sign Out</a>
-<? require 'site_footer.php'; ?>
+<? require 'site_footer.php'; 
+?>
+</div>
+
 
     </body>
 </html>

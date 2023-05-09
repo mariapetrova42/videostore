@@ -21,8 +21,9 @@
 	</script>
 </head>
 <body>
+	<img src="../images/videostore.png" width="100%" height="auto" alt="Image of Video Store with DVDs for sale">
 	<div id="wrapper">
-	<h1>Search for a Movie/Show!</h1>
+	<h1>Search for a Movie</h1>
 
 	<form method="get" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="myForm">
 
@@ -45,7 +46,6 @@
 	<br>
 	<!-- <a href='searchVRG_fancy.php?artistName=&nation=United States'>Click here for American Artists</a> -->
     <br>
-	</div>
 <?php
     $servername = "localhost";
     $username = "root";
@@ -107,7 +107,7 @@
 		if (!empty($_GET['movie_actor'])) 
 			// $sql = "select * from movie where movie_actor1 like '%$actor%' OR movie_actor2 like '%$actor%'";
 			$sql = "SELECT * FROM movie WHERE movie_actor1 LIKE '%" . $actor . "%' OR movie_actor2 LIKE '%" . $actor . "%'";		
-		echo $sql;
+		// echo $sql;
 
 		// if($name == "")
 		// if(isset($_GET["movie_title"]))
@@ -154,6 +154,8 @@
     }
     $conn->close();
 ?>
+	</div>
+
 
 </body>
 </html>
