@@ -242,6 +242,7 @@ LIMIT 0,10
 <br>
 <br>
 
+
 <?php
     $servername = "localhost";
     $username = "root";
@@ -259,51 +260,51 @@ LIMIT 0,10
 
     if(isset($_GET["yr"]))
     {
-      $yr = isset($_GET["yr"])?$_GET["yr"]:"";
-
+      $yare = isset($_GET["yr"])?$_GET["yr"]:"";
 
       if (!empty($_GET['yr']))
-        // $sql = "select * from movie where movie_title like '%$title%'";
-        $sql = "SELECT m.movie_id, m.movie_title, m.movie_year, COUNT(CASE WHEN t.tran_type = 'borrow' THEN 1 ELSE 0 END) as num_borr,
-EXTRACT(year FROM t.tran_date) AS yer
-from movie as m, transaction as t
-where t.member_id = m.movie_id and EXTRACT(year FROM t.tran_date) LIKE 'yr'
-GROUP by m.movie_id, yer
-ORDER by num_borr DESC
-LIMIT 0,10
-;
-";
+  			// $sql = "select * from movie where movie_title like '%$title%'";
+  			$sql = "SELECT m.movie_id, m.movie_title, m.movie_year, COUNT(CASE WHEN t.tran_type = 'borrow' THEN 1 ELSE 0 END) as num_borr,
+        EXTRACT(year FROM t.tran_date) AS yer
+        from movie as m, transaction as t
+        where t.member_id = m.movie_id and EXTRACT(year FROM t.tran_date) = '$yare'
+        GROUP by m.movie_id, yer
+        ORDER by num_borr DESC
+        LIMIT 0,10
+        ;";
 
-      $result = $conn->query($sql);
+        $result = $conn->query($sql);
 
-      if ($result->num_rows > 0) {
-        echo "<center><table>";
-        echo "<tr>";
-          echo "<th>ID</th>";
-          echo "<th>Title</th>";
-          echo "<th>Movie Year</th>";
-          echo "<th>Times Borrowed</th>";
-        echo "</tr>";
-        // output data of each row
-        while($row = $result->fetch_assoc()) {
-          echo "<tr>";
-            echo "<td>" . $row['novie_id'] . "</td>";
-            echo "<td>" . $row['movie_title'] . "</td>";
-            echo "<td>" . $row['movie_year'] . "</td>";
-            echo "<td>" . $row['num_borr'] . "</td>";
+    		if ($result->num_rows > 0) {
+    			echo "<center><table>";
+    			echo "<tr>";
+            echo "<th>ID</th>";
+            echo "<th>Title</th>";
+    				echo "<th>Movie Year</th>";
+    				echo "<th>Times Borrowed</th>";
+            echo "<th>In Year</th>";
+    			echo "</tr>";
+    			// output data of each row
+    			while($row = $result->fetch_assoc()) {
+    				echo "<tr>";
+              echo "<td>" . $row['movie_id'] . "</td>";
+              echo "<td>" . $row['movie_title'] . "</td>";
+    					echo "<td>" . $row['movie_year'] . "</td>";
+    					echo "<td>" . $row['num_borr'] . "</td>";
+              echo "<td>" . $row['yer'] . "</td>";
 
 
-          echo "</tr>";
+    				echo "</tr>";
 
+    			}
+    			echo "</table><center><br><br>";
+    		}
+    		else {
+    			echo "0 results<br><br>";
+    		}
         }
-        echo "</table><center><br><br>";
-      }
-      else {
-        echo "0 results<br><br>";
-      }
-      }
-      $conn->close();
-  ?>
+        $conn->close();
+    ?>
 
 
   </body>
