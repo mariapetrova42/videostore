@@ -37,6 +37,8 @@
 
     Item Type: (DVD, BluRay, Player)  <input type="text" name="itype" id="itype"/>
 		<br><br>
+		Leave the following sections blank if searching for a videoplayer.
+		<br>
 		Movie:  <input type="text" name="movie_title" id="movie_title"/>
 		<br><br>
 		Genre: <input type="text" name="movie_genre" id="movie_genre"/>
