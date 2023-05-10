@@ -118,7 +118,7 @@
                 echo "<ul>";
                 //echo "<li> <a href=\"add_movie.php\"> Add a movie </li>";
                 echo "<li> <a href=\"search.php\"> Search for an item </li>";
-                //echo "<li> <a href=\"add_customer\"> Add a customer </li>";
+                echo "<li> <a href=\"add_customer.php\"> Find a customer </li>";
                 echo "<li> <a href=\"info.php\"> Additional Admin Info</li>";
                 echo "</ul>";
             }
