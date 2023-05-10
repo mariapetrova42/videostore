@@ -12,13 +12,13 @@ Goals, Description, & Issues Faced
 	The goal of Phase 3 of this project was to create an interface that can be used to access and update the information in our videostore database, which we designed and created in the previous phases of the project. 
 	
 	The database schema is as follows: The DMS Videostore franchise has several store locations. Members of the videostore network can visit these locations and rent either disks, or video players. The disks contain movies in either blu-ray or DVD format, and each has an associated cost of rental per day. Some of the video players have special features. The implementation of this videostore keeps track of the rentals and allows members to:
-	- Search a movie by genre, title, or director name
+	- Search a movie by genre, title, actor name, or director name
+	- Print the item_IDs and titles of movies directed by a certain director, starring a certain actor, or with a certain title
 	- Checkout a movie
 	- Return a movie
 	- Reserve a movie
+	- Print the list of movies that they've rented and reserved
 	- Calculate amount due for a given checked-out movie based on current date
-	- Print the list of movies that they've reserved
-	- Print the movie_IDs and titles of movies directed by a certain director
 	- Log out of the application
 Special members called administrators also exist. Admins can:
 	- Add a movie copy to the database
@@ -31,11 +31,21 @@ Special members called administrators also exist. Admins can:
 	- Print the 10 most popular movies checked out in a given year
 	- Find the average amount paid for rental per customer
 	- Log out of the application
+	
 Before being able to reach these functions, members (regular and admin) must log into the application using their member username and password. The home login page will also have an option to create a new regular member account, which will be added to the database. A new administrator account can only be created by an already-existing admin. 
 	
-	Revisions made since Phase 2 include eliminating the producer attribue of movie and renaming member 'user_ID' to 'username' and specifying its uniqueness. Since the producer of a movie is often the same as the director of the movie, we felt that it was an unessecary element. As for the username attribute, 'user_ID' was confusing when considering the attribute 'member_ID'. By renaming it, we eliminated the confusion between the 'member_ID' which is used to keep track of the member within the database, and the 'username' which the member uses to log into their account. We also added an 'is_admin' attribute to the 'member' table to reflect the additional admin/customer distinction that was introduced in Phase 3.
+	Revisions made since Phase 2 include eliminating the producer attribue of movie and renaming member 'user_ID' to 'username' and specifying its uniqueness. 
+	Since the producer of a movie is often the same as the director of the movie, we felt that it was an unessecary element. 
+	As for the username attribute, 'user_ID' was confusing when considering the attribute 'member_ID'. By renaming it, we eliminated the confusion between the 'member_ID' which is used to keep track of the member within the database, and the 'username' which the member uses to log into their account. 
+	We also added an 'is_admin' attribute to the 'member' table to reflect the additional admin/customer distinction that was introduced in Phase 3.
+	The overall table structure ended up being re-written, with players and movies essentially being condensed into a single item table. See the included diagram for the new table structure.
 	
 	One of the first problems we encountered in Phase 3 was connecting to the server. $_POST was not working properly, though we managed to debug and fix the issue with some advice from Professor Banerji.
+	There were many other problems encountered, including but not limited to the following:
+		- Figuring out the queries needed to execute the given functionalities
+		- Re-writing the tables so that it was possible to write intelligeble queries
+		- Maintaining various sessions to keep continuity between different web pages (staying in the same member account, going to the borrow page for a given item from the search page)
+		- Populating the tables with data, specifically transactions so that there was a good variety of transactions for all of the items. 
 
 --------------------------------------------------------------------------------------------------------
 
@@ -49,196 +59,104 @@ Description of Implementation
 --------------------------------------------------------------------------------------------------------
 
 2.
-SQL Commands - Table Creation + Data
+SQL Commands - Table Creation (See separate SQL file for data)
 -------------------------------------
-
-CREATE TABLE `disk` (
-  `item_id` int(11) NOT NULL,
-  `disk_daily_rent` varchar(50) DEFAULT NULL,
-  `disk_type` varchar(50) DEFAULT NULL
-);
-
-ALTER TABLE `disk`
-  ADD PRIMARY KEY (`item_id`),
-  ADD UNIQUE KEY `item_id` (`item_id`);
-  
-ALTER TABLE `disk`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
-INSERT INTO `disk` (`item_id`, `disk_daily_rent`, `disk_type`) VALUES
-(1, '0.75', 'DVD'),
-(2, '0.75', 'Blu-Ray');
-
--- --------------------------------------------------------
 
 CREATE TABLE `item` (
   `item_id` int(11) NOT NULL,
-  `store_id` int(11) DEFAULT NULL
-);
-
-ALTER TABLE `item`
-  ADD PRIMARY KEY (`item_id`),
-  ADD UNIQUE KEY `item_id` (`item_id`),
-  ADD KEY `store_id` (`store_id`);
-
-ALTER TABLE `item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
-  
-ALTER TABLE `item`
-  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `store` (`store_id`);
-  
--- --------------------------------------------------------
+  `status` varchar(30) NOT NULL DEFAULT 'available',
+  `rent_p_day` decimal(4,2) NOT NULL,
+  `item_type` varchar(30) NOT NULL,
+  `movie_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `member` (
   `member_id` int(11) NOT NULL,
-  `member_first_name` varchar(50) DEFAULT NULL,
-  `member_last_name` varchar(50) DEFAULT NULL,
-  `member_email` varchar(50) DEFAULT NULL,
-  `member_username` varchar(50) DEFAULT NULL,
-  `member_password` varchar(50) DEFAULT NULL,
-  `is_admin` tinyint(1) DEFAULT 0
-); 
-
-ALTER TABLE `member`
-  ADD PRIMARY KEY (`member_id`),
-  ADD UNIQUE KEY `member_id` (`member_id`,`member_email`,`member_username`);
-  
-ALTER TABLE `member`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-  
-ALTER TABLE `movie`
-  ADD CONSTRAINT `movie_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`);
-
-INSERT INTO `member` (`member_id`, `member_first_name`, `member_last_name`, `member_email`, `member_username`, `member_password`, `is_admin`) VALUES
-(1, 'Psyche', 'Younus', 'psychuout@gmail.com', 'psychic', 'SunFlower1@3$', 1),
-(2, 'Dora', 'Explora', 'doradora@outlook.com', 'adorable', 'NoSwiping24', 1),
-(3, 'Mariana', 'Petrel', 'riabird@proton.me', 'riachan', 'EagleEye68', 1),
-(4, 'Profesor', 'Ricarudo', 'srricardito@gmail.com', 'richie', 'aprendeR35', 0),
-(5, 'Michelle', 'Avana', 'mishavana@aol.com', 'biscuitjr', 'CookieYum46', 0),
-(6, 'Truck', 'Aggarwal', 'truckerboy123@gmail.com', 'truckkun', 'IseKAIman69', 0),
-(7, 'Ramen', 'Somany', 'somuchramen@outlook.com', 'noodles', 'SendNoods3456', 0),
-(8, 'Moist', 'Von Lipwig', 'goldenmail@outlook.com', 'argent', 'Conmanager80', 0),
-(9, 'Jam', 'Seraphine', 'sjamsine@gmail.com', 'jellyg', 'PeanutButter91', 0),
-(10, 'Banana', 'Sugar', 'banananas@outlook.com', 'sugapie', 'MinionGru02', 0),
-(11, 'Maurice', 'Wiseman', 'nineliveslover@outlook.com', 'catboy', 'YummRat12', 0),
-(12, 'Harriet', 'Porber', 'bychucktingle@gmail.com', 'dinolvr', 'BadBoyPar23', 0),
-(13, 'Alice', 'Wonderland', 'foreverlost@yahoo.com', 'bigsmall', 'DrinkMe45', 0),
-(17, 'Madison', 'Hatter', 'teapartyanimal@gmail.com', 'hatman', 'CrazyBeverage34', 0),
-(18, 'Gem', 'Heartland', 'gemheart@aol.com', 'jeweljem', 'ChasmFiend56', 0),
-(19, 'Kvothe', 'Bloodless', 'tooextra2btrue@proton.me', 'barkeep', 'EdemahRuh67', 0),
-(20, 'Alice', 'Faerie', 'neverfound@yahoo.com', 'smallbig', 'EatMe78', 0),
-(21, 'Mark', 'Avana', 'mikavana@aol.com', 'biscuitsr', 'YumCookie89', 0),
-(22, 'Sierra', 'Younus', 'highsierra@outlook.com', 'nevada', 'GoodBunny90', 0),
-(26, 'Deku', 'Izuku', 'deckurface@gmail.com', 'allmightjr', 'PlusUltra6789', 0),
-(27, 'Kenma', 'Kozume', 'catboyplayer@gmail.com', 'nekokun', 'NekomaSlay7890', 0),
-(28, 'Sebastian', 'Michaelis', 'givemeyoursoul@aol.com', 'father', 'CielSoulYum8901', 0),
-(29, 'Juliet', 'Romera', 'dumbwaystodie@yahoo.com', 'jcapulet', 'LetMeLive9012', 0),
-(30, 'Inej', 'Brekker', 'tightropewalker@proton.me', 'dancer', 'KazLove0123', 0);
-
--- --------------------------------------------------------
+  `member_first_name` varchar(50) NOT NULL,
+  `member_last_name` varchar(50) NOT NULL,
+  `member_email` varchar(50) NOT NULL,
+  `member_username` varchar(50) NOT NULL,
+  `member_password` varchar(50) NOT NULL,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `movie` (
   `movie_id` int(11) NOT NULL,
-  `item_id` int(11) DEFAULT NULL,
-  `movie_genre` varchar(50) DEFAULT NULL,
-  `movie_title` varchar(50) DEFAULT NULL,
-  `movie_year` int(4) DEFAULT NULL,
-  `movie_director` varchar(50) DEFAULT NULL,
-  `movie_actor1` varchar(50) DEFAULT NULL,
-  `movie_actor2` varchar(50) DEFAULT NULL
-);
-
-ALTER TABLE `movie`
-  ADD PRIMARY KEY (`movie_id`),
-  ADD UNIQUE KEY `movie_id` (`movie_id`),
-  ADD KEY `item_id` (`item_id`);
-  
-ALTER TABLE `movie`
-  MODIFY `movie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
-INSERT INTO `movie` (`movie_id`, `item_id`, `movie_genre`, `movie_title`, `movie_year`, `movie_director`, `movie_actor1`, `movie_actor2`) VALUES
-(1, NULL, 'Adventure', 'Princess Bride, The', 1987, 'Rob Reiner', 'Cary Elwes', 'Robin Wright'),
-(2, NULL, 'Spy', 'Man From UNCLE, The', 2015, 'Guy Ritchie', 'Henry Caville', 'Armie Hammer'),
-(3, NULL, 'Adventure', 'Mulan', 1998, 'Barry Cook', 'Ming-Na Wen', 'Eddie Murphy'),
-(4, NULL, 'Comedy', 'Alvin and the Chipmunks', 2007, 'Tim Hill', 'Jason Lee', 'David Cross'),
-(5, NULL, 'Comedy', 'Trading Places', 1983, 'John Landis', 'Dan Aykroud', 'Eddie Murphy'),
-(6, NULL, 'Comedy', 'Coming to America', 1988, 'John Landis', 'Eddie Murphy', 'Arsenio Hall'),
-(7, NULL, 'Fanstasy', 'Shrek', 2001, 'Andrew Adamson', 'Mike Meyers', 'Cameron Diaz'),
-(8, NULL, 'Adventure', 'Robin Hood: Men in Tights', 1993, 'Mel Brooks', 'Cary Elwes', 'Richard Lewis'),
-(9, NULL, 'Action', 'Hunger Games, The', 2012, 'Gary Ross', 'Jennifer Lawrence', 'Josh Hutcherson'),
-(10, NULL, 'Fantasy', 'Shrek 2', 2004, 'Andrew Adamson', 'Mike Meyers', 'Antonio Banderas'),
-(11, NULL, 'Horror', 'Frankenstein', 1931, 'James Whale', 'Colin Clive', 'Boris Karloff'),
-(12, NULL, 'Horror', 'Dracula', 1931, 'Tom Browning', 'Bela Lugosi', 'David Manners'),
-(13, NULL, 'Horror', 'Get Out', 2017, 'Jordan Peele', 'Daniel Kaluuya', 'Allison Williams'),
-(14, NULL, 'Romance', 'Crazy Stupid Love', 2011, 'Glen Ficarra', 'Steve Carell', 'Ryan Gosling'),
-(15, NULL, 'Thriller', 'Cocaine Bear', 2023, 'Elizabeth Banks', 'Keri Russel', 'Christian Convery'),
-(16, NULL, 'Spy', 'Mission Impossible', 1996, 'Brian De Palma', 'Tom Cruise', 'Jon Voight'),
-(17, NULL, 'Spy', 'Mission Impossible 2', 2000, 'John Woo', 'Tom Cruise', 'Dougray Scott'),
-(18, NULL, 'Fantasy', 'Puss in Boots', 2011, 'Chris Miller', 'Antonio Banderas', 'Salma Hayek'),
-(19, NULL, 'Superhero', 'Iron Man', 2008, 'Jon Favreau', 'Robert Downey Jr', 'Terrence Howard'),
-(20, NULL, 'Superhero', 'Hulk', 2003, 'Ang Lee', 'Eric Bana', 'Jennifer Connely'),
-(21, NULL, 'Drama', 'Beautiful Mind, A', 2001, 'Ron Howard', 'Russel Crowe', 'Ed Harris');
-
--- --------------------------------------------------------
-
-CREATE TABLE `player` (
-  `item_id` int(11) NOT NULL
-);
-
-ALTER TABLE `player`
-  ADD PRIMARY KEY (`item_id`),
-  ADD UNIQUE KEY `item_id` (`item_id`);
-  
-ALTER TABLE `player`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
-
--- --------------------------------------------------------
+  `movie_genre` varchar(30) NOT NULL,
+  `movie_title` varchar(50) NOT NULL,
+  `movie_year` year(4) NOT NULL,
+  `movie_director` varchar(50) NOT NULL,
+  `movie_actor1` varchar(50) NOT NULL,
+  `movie_actor2` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `store` (
   `store_id` int(11) NOT NULL,
-  `store_phone` varchar(10) DEFAULT NULL,
-  `store_street1` varchar(50) DEFAULT NULL,
-  `store_street2` varchar(50) DEFAULT NULL,
-  `store_city` varchar(50) DEFAULT NULL,
-  `store_state` varchar(50) DEFAULT NULL,
-  `store_zipcode` varchar(5) DEFAULT NULL
-);
-
-ALTER TABLE `store`
-  ADD PRIMARY KEY (`store_id`),
-  ADD UNIQUE KEY `store_id` (`store_id`);
-  
-ALTER TABLE `store`
-  MODIFY `store_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
-INSERT INTO `store` (`store_id`, `store_phone`, `store_street1`, `store_street2`, `store_city`, `store_state`, `store_zipcode`) VALUES
-(1, '7731234567', '1776 Windy City St', 'FL 27', 'Chicago', 'Illinois', '60601'),
-(2, '8479876543', '1857 Cool College Rd', '', 'Lake Forest', 'Illinois', '60045'),
-(3, '2624561237', '6666 Spooky Dr', 'FL 01', 'Kenosha', 'Wisconsin', '53140');
-
--- --------------------------------------------------------
+  `store_phone` varchar(10) NOT NULL,
+  `store_street1` varchar(50) NOT NULL,
+  `store_street2` varchar(50) NOT NULL,
+  `store_city` varchar(30) NOT NULL,
+  `store_state` varchar(30) NOT NULL,
+  `store_zipcode` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 CREATE TABLE `transaction` (
   `tran_id` int(11) NOT NULL,
-  `tran_start_date` date DEFAULT NULL,
-  `tran_end_date` date DEFAULT NULL,
-  `tran_type` varchar(50) DEFAULT NULL,
-  `store_id` int(11) DEFAULT NULL,
+  `tran_date` date DEFAULT NULL,
+  `tran_type` varchar(30) DEFAULT NULL,
   `item_id` int(11) DEFAULT NULL,
+  `store_id` int(11) DEFAULT NULL,
   `member_id` int(11) DEFAULT NULL
-); 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+ALTER TABLE `item`
+  ADD PRIMARY KEY (`item_id`),
+  ADD KEY `movie_id` (`movie_id`);
+  
+ALTER TABLE `member`
+  ADD PRIMARY KEY (`member_id`),
+  ADD UNIQUE KEY `member_username` (`member_username`);
+
+ALTER TABLE `movie`
+  ADD PRIMARY KEY (`movie_id`);
+
+ALTER TABLE `store`
+  ADD PRIMARY KEY (`store_id`);
+  
 ALTER TABLE `transaction`
   ADD PRIMARY KEY (`tran_id`),
-  ADD UNIQUE KEY `member_id` (`member_id`),
+  ADD KEY `item_id` (`item_id`),
   ADD KEY `store_id` (`store_id`),
-  ADD KEY `item_id` (`item_id`);
+  ADD KEY `member_id` (`member_id`);
+  
+ALTER TABLE `item`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+
+ALTER TABLE `member`
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+ALTER TABLE `movie`
+  MODIFY `movie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+ALTER TABLE `store`
+  MODIFY `store_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 ALTER TABLE `transaction`
-  MODIFY `tran_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `tran_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1290;
+
+ALTER TABLE `item`
+  ADD CONSTRAINT `item_ibfk_1` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`movie_id`);
 
 ALTER TABLE `transaction`
-  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `store` (`store_id`),
-  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`),
+  ADD CONSTRAINT `transaction_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `item` (`item_id`),
+  ADD CONSTRAINT `transaction_ibfk_2` FOREIGN KEY (`store_id`) REFERENCES `store` (`store_id`),
   ADD CONSTRAINT `transaction_ibfk_3` FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`);
- 
+  
+COMMIT;
+
+  
+
+
+
+
+
