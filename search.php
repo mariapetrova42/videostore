@@ -38,7 +38,7 @@
     Item Type: (DVD, BluRay, Player)  <input type="text" name="itype" id="itype"/>
 		<br><br>
 		Leave the following sections blank if searching for a videoplayer.
-		<br>
+		<br><br>
 		Movie:  <input type="text" name="movie_title" id="movie_title"/>
 		<br><br>
 		Genre: <input type="text" name="movie_genre" id="movie_genre"/>
@@ -112,19 +112,19 @@
 
     if (!empty($_GET['itype']))
 			// $sql = "select * from movie where movie_title like '%$title%'";
-			$sql = "SELECT item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(item_type) LIKE LOWER('%$type%') AND item.movie_id = m.movie_id";
+			$sql = "SELECT item.item_id, item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(item_type) LIKE LOWER('%$type%') AND item.movie_id = m.movie_id";
 		if (!empty($_GET['movie_title']))
 			// $sql = "select * from movie where movie_title like '%$title%'";
-			$sql = "SELECT item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(movie_title) LIKE LOWER('%$title%') AND item.movie_id = m.movie_id AND LOWER(item_type) LIKE LOWER('%$type%')";
+			$sql = "SELECT item.item_id, item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(movie_title) LIKE LOWER('%$title%') AND item.movie_id = m.movie_id AND LOWER(item_type) LIKE LOWER('%$type%')";
 		if (!empty($_GET['movie_genre']))
 			// $sql = "select * from movie where movie_genre like '%$genre%'";
-			$sql = "SELECT item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(movie_genre) LIKE LOWER('%$genre%') AND item.movie_id = m.movie_id AND LOWER(item_type) LIKE LOWER('%$type%')";
+			$sql = "SELECT item.item_id, item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(movie_genre) LIKE LOWER('%$genre%') AND item.movie_id = m.movie_id AND LOWER(item_type) LIKE LOWER('%$type%')";
 		if (!empty($_GET['movie_director']))
 			// $sql = "select * from movie where movie_director like '%$director%'";
-			$sql = "SELECT item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(movie_director) LIKE LOWER('%$director%') AND item.movie_id = m.movie_id AND LOWER(item_type) LIKE LOWER('%$type%')";
+			$sql = "SELECT item.item_id, item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(movie_director) LIKE LOWER('%$director%') AND item.movie_id = m.movie_id AND LOWER(item_type) LIKE LOWER('%$type%')";
 		if (!empty($_GET['movie_actor']))
 			// $sql = "SELECT * FROM movie WHERE movie_actor1 LIKE '%" . $actor . "%' OR movie_actor2 LIKE '%" . $actor . "%'";
-			$sql = "SELECT item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(movie_actor1) LIKE LOWER('%$actor%') OR LOWER(movie_actor2) LIKE LOWER('%$actor%') AND item.movie_id = m.movie_id AND LOWER(item_type) LIKE LOWER('%$type%')";
+			$sql = "SELECT item.item_id, item.item_type, m.movie_title, m.movie_genre, m.movie_director, m.movie_actor1, m.movie_actor2, item.status FROM movie as m, item WHERE LOWER(movie_actor1) LIKE LOWER('%$actor%') OR LOWER(movie_actor2) LIKE LOWER('%$actor%') AND item.movie_id = m.movie_id AND LOWER(item_type) LIKE LOWER('%$type%')";
 
 
 		$result = $conn->query($sql);
@@ -132,6 +132,7 @@
 		if ($result->num_rows > 0) {
 			echo "<center><table>";
 			echo "<tr>";
+        echo "<th>ID</th>";
         echo "<th>Type</th>";
 				echo "<th>Title</th>";
 				echo "<th>Genre</th>";
@@ -143,9 +144,10 @@
 			// output data of each row
 			while($row = $result->fetch_assoc()) {
 				echo "<tr>";
+          echo "<td>" . $row['item_id'] . "</td>";
           echo "<td>" . $row['item_type'] . "</td>";
 					echo "<td>" . $row['movie_title'] . "</td>";
-					echo "<td>" . $row["movie_genre"] . "</td>";
+					echo "<td>" . $row['movie_genre'] . "</td>";
 					echo "<td>" . $row['movie_director'] . "</td>";
 					echo "<td>" . $row['movie_actor1'] . "</td>";
 					echo "<td>" . $row['movie_actor2'] . "</td>";
