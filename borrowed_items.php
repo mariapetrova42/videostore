@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head><title>Search for a Document</title></head>
+<head><title>Search for a Document</title>
     <link rel="stylesheet" href="styles.css">
     <style>
 
-    table, th, td, tr {            
+    table, th, td, tr {
 			border: solid grey;
 			border-collapse:collapse;
 			padding: 7px 5px;
@@ -12,15 +12,21 @@
 			color: #1c0909;
         }
     </style>
-
+</head>
 <body>
+
+  <img
+    src="../images/videostore.png"
+    width="100%"
+    height="auto"
+    alt="Image of Video Store with DVDs for sale">
 
 <?php
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "VideoStore"; 
-    
+    $dbname = "VideoStore";
+
 
 
     // Create connection
@@ -30,7 +36,7 @@
     if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
     }
-    
+
     // var_dump($member_id);
 
     session_start();
@@ -38,15 +44,15 @@
         $member_id = $_SESSION["member_id"];
     }
 
-//Print the list of movies reserved by a customer and their status. 
+//Print the list of movies reserved by a customer and their status.
 
     $sql = "SELECT t.item_id, i.item_type, mv.movie_title, i.rent_p_day, i.rent_p_day * DATEDIFF(CURRENT_DATE, t.tran_date) AS amt_due, t.tran_type
     FROM transaction as t, item as i, movie as mv, member
-    WHERE i.status = 'unavailable' 
-    -- and t.tran_type = 'borrow' 
+    WHERE i.status = 'unavailable'
+    -- and t.tran_type = 'borrow'
 
-    and t.item_id = i.item_id 
-    and i.movie_id = mv.movie_id 
+    and t.item_id = i.item_id
+    and i.movie_id = mv.movie_id
     and t.member_id = member.member_id
 
     AND member.member_id = $member_id
@@ -56,13 +62,13 @@
 
     if ($result->num_rows > 0) {
 
-        session_start();
+        //session_start();
         if(isset($_SESSION["fullname"]))
            {
            echo "<h1>{$_SESSION['fullname']}";
-   
+
                echo "'s Items</h1>";
-        }  
+        }
 
         echo "<table>";
         echo "<tr>";
@@ -84,16 +90,16 @@
                 echo "<td>" . $row['amt_due'] . "</td>";
                 echo "<td>" . $row['tran_type'] . "</td>";
 
-                
+
             echo "</tr>";
 
-        echo "Back to Account";
+      
         // header("Location: welcome.php");
 
 
         }
         echo "</table>";
-    } 
+    }
     else {
         echo "0 results";
         echo "<h1>You have no items</h1>";
@@ -109,7 +115,3 @@
 
     $conn->close();
 ?>
-
-
-
-
