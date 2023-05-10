@@ -21,31 +21,41 @@ Goals, Description, & Issues Faced
 	- Calculate amount due for a given checked-out movie based on current date
 	- Log out of the application
 Special members called administrators also exist. Admins can:
-	- Add a movie copy to the database
-	- Search a movie by its attributes and check the status of its copies
-	- Add a new customer to the database
-	- Make existing customer an administrator
-	- Print the name and location of a given store branch
-	- Print the top 10 most frequent renters in a store and the number of movies each one has rented
-	- Print the top 10 most rented movies in a store
+	- Do everything a customer can
+	- Find customer information based on name or member ID
+	- Print the name and location of the different store branches
+	- Print the top 10 most frequent renters and the number of movies each one has rented
+	- Print the top 10 most rented movies
 	- Print the 10 most popular movies checked out in a given year
-	- Find the average amount paid for rental per customer
-	- Log out of the application
+	
 	
 Before being able to reach these functions, members (regular and admin) must log into the application using their member username and password. The home login page will also have an option to create a new regular member account, which will be added to the database. A new administrator account can only be created by an already-existing admin. 
 	
-	Revisions made since Phase 2 include eliminating the producer attribue of movie and renaming member 'user_ID' to 'username' and specifying its uniqueness. 
-	Since the producer of a movie is often the same as the director of the movie, we felt that it was an unessecary element. 
-	As for the username attribute, 'user_ID' was confusing when considering the attribute 'member_ID'. By renaming it, we eliminated the confusion between the 'member_ID' which is used to keep track of the member within the database, and the 'username' which the member uses to log into their account. 
-	We also added an 'is_admin' attribute to the 'member' table to reflect the additional admin/customer distinction that was introduced in Phase 3.
-	The overall table structure ended up being re-written, with players and movies essentially being condensed into a single item table. See the included diagram for the new table structure.
+	Things we edited from the original design :
+		- Transactions are associated with stores, but the admin 'search for top renters' is not store-specific. Likewise for the top rented movies and the top movies rented in a given year
+		- There are no fines, only amount due for a checkout.
+		- Overall database design was changed, with players and movies essentially being condensed into a single item table.
+		- Producer attribute from movies was elimintated, since the producer is often the same as the director and this information was deemed unecessary
+		- An is_admin variable was added to the member enitity, to denote administrators versus customers
+		- The user_id attribute was renamed to 'username' to keep it from getting confused with member_id. Usernames are used to log in, member_id denotes the unique member identifier within the database
 	
 	One of the first problems we encountered in Phase 3 was connecting to the server. $_POST was not working properly, though we managed to debug and fix the issue with some advice from Professor Banerji.
+	
 	There were many other problems encountered, including but not limited to the following:
 		- Figuring out the queries needed to execute the given functionalities
 		- Re-writing the tables so that it was possible to write intelligeble queries
 		- Maintaining various sessions to keep continuity between different web pages (staying in the same member account, going to the borrow page for a given item from the search page)
 		- Populating the tables with data, specifically transactions so that there was a good variety of transactions for all of the items. 
+		- Making the transactions functional
+		
+	Functionalities that we wanted to implement, but could not at the the moment:
+		- Make smooth transitions when going back to home page (ex, from 'borrow' page to 'welcome' page)
+		- Checking that the customer can only return a movie that they themselves have rented out
+		- Admin: Add or delete a movie copy from the database
+		- Admin: Make existing customer an administrator (creating new customer would be the same as a sign up)
+		- Admin: Find the average amount paid for rental per customer (would have to link borrow and return transactions somehow)
+		- Verify that the username is unique when a new member signs up
+		- Going through and standardizing page presentations to be uniform and consistent with headers, footers, etc
 
 --------------------------------------------------------------------------------------------------------
 
@@ -54,7 +64,7 @@ Description of Implementation
 -------------------------------------
 
 	Our implementatation of this project involved creating the videostore database itself, populating the tables with data, and writing a front-end application using PHP, HTML, and CSS. We also took time to create a pleasant user interface for the menu-driven application, as we all share an interest in design. 
-	See the previous section for a description of the problems faced in Phase 3.
+	See the previous section for an extended description of the features and problems faced in Phase 3.
 
 --------------------------------------------------------------------------------------------------------
 
