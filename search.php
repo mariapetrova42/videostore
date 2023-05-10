@@ -56,7 +56,6 @@
 
 	<br>
 	<br>
-	<!-- <a href='searchVRG_fancy.php?artistName=&nation=United States'>Click here for American Artists</a> -->
     <br>
 <?php
     $servername = "localhost";
@@ -130,28 +129,42 @@
 		$result = $conn->query($sql);
 
 		if ($result->num_rows > 0) {
+			echo "<h3>You can only return an unavailable item</h3>";
+			echo "<h5>Or else nothing will happen and all you accomplish is wasting your time</h5>";
+
 			echo "<center><table>";
 			echo "<tr>";
-        echo "<th>ID</th>";
-        echo "<th>Type</th>";
+				echo "<th>ID</th>";
+				echo "<th>Type</th>";
 				echo "<th>Title</th>";
 				echo "<th>Genre</th>";
 				echo "<th>Director</th>";
 				echo "<th>Actor 1</th>";
 				echo "<th>Actor 2</th>";
-        echo "<th>Status</th>";
+        		echo "<th>Status</th>";
 			echo "</tr>";
 			// output data of each row
 			while($row = $result->fetch_assoc()) {
 				echo "<tr>";
-          echo "<td>" . $row['item_id'] . "</td>";
-          echo "<td>" . $row['item_type'] . "</td>";
+					// echo "<td><a href='borred.php?itemid=".$row['item_id']."&movie_id=".$movie_id."&tran_type=".$row['item_type']".'>".$row['item_id']."</a></td>";
+					// echo "<td><a href='borred.php?itemid=".$row['item_id']."&movie_id=".$movie_id."'>".$row['item_id']."</a></td>";
+
+					echo "<td>" . $row['item_id'] . "</td>";
+					echo "<td>" . $row['item_type'] . "</td>";
 					echo "<td>" . $row['movie_title'] . "</td>";
 					echo "<td>" . $row['movie_genre'] . "</td>";
 					echo "<td>" . $row['movie_director'] . "</td>";
 					echo "<td>" . $row['movie_actor1'] . "</td>";
 					echo "<td>" . $row['movie_actor2'] . "</td>";
-          echo "<td>" . $row['status'] . "</td>";
+					echo "<td>" . $row['status'] . "</td>";
+					echo "<td><a href='borrow.php?itemid=".$row['item_id']."'>Borrow</a></td>";
+					echo "<td><a href='reserve.php?itemid=".$row['item_id']."'>Reserve</a></td>";
+					echo "<td><a href='return.php?itemid=".$row['item_id']."'>Return</a></td>";
+
+
+					// echo "<td><a href='borred.php?itemid=".$row['item_id']."&movie_id=".$movie_id."'>".$row['item_id']."</a></td>";
+					// echo "<td><a href='borred.php?itemid=".$row['item_id']."'>".$row['item_id']."</a></td>";
+
 
 
 				echo "</tr>";

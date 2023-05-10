@@ -77,8 +77,8 @@
                     // echo "<a href=\"borrowed_items.php\"> Items Borrowed </a>";
                     // echo"<br><br>";
                     echo "<li> <a href=\"borrowed_items.php\"> View your borrowed items </a></li>";
-                    echo "<li> <a href=\"search.php\"> Search for a movie </a></li>";
-                    echo "<li> <a href=\"borrow.php\"> Rent a player </a></li>";
+                    echo "<li> <a href=\"search.php\"> Search, Borrow, Reserve, or Return Item </li>";
+                    echo "<li> <a href=\"borrow.php\"> Borrow a movie/player </a></li>";
                     echo "<li> <a href=\"return.php\"> Return a movie </a></li>";
 
                 // echo "<li> <a href=\"search.php\"> View items reserved </li>";
@@ -117,7 +117,6 @@
                 echo "<h3>Please Choose an Option Below</h3>";
                 echo "<ul>";
                 echo "<li> <a href=\"add_movie.php\"> Add a movie </li>";
-                echo "<li> <a href=\"search_movie.php\"> Search for a movie </li>";
                 echo "<li> <a href=\"add_customer\"> Add a customer </li>";
                 echo "<li> <a href=\"info.php\"> Additional</li>";
                 echo "</ul>";
